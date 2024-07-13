@@ -9,8 +9,8 @@
 #include <algorithm>
 #include <iostream>
 #include <time.h>
-#include <utility>
-
+//#include <utility>
+//#include <vector>
 #include "CSVparser.hpp"
 
 using namespace std;
@@ -45,7 +45,7 @@ struct Bid {
  */
 void displayBid(Bid bid) {
     std::cout << bid.bidId << ": " << bid.title << " | " << bid.amount << " | "
-            << bid.fund << endl;
+              << bid.fund << endl;
     return;
 }
 
@@ -122,22 +122,29 @@ vector<Bid> loadBids(string csvPath) {
  * @param end Ending index to partition
  */
 int partition(vector<Bid> &bids, int begin, int end) {
-    //set low and high equal to begin and end
+    int low = begin;
+    int high = end;
 
-    // Calculate the middle element as middlePoint (int)
-    // Set Pivot as middlePoint element title to compare (string)
+    int middlePoint = begin + (end - begin) / 2;
+    string pivot = bids[middlePoint].title;
 
-    // while not done
-
-    // keep incrementing low index while bids[low].title < Pivot
-
-    // keep decrementing high index while Pivot < bids[high].title
-
-    /* If there are zero or one elements remaining,
-        all bids are partitioned. Return high */
-    // else swap the low and high bids (built in vector method)
-    // move low and high closer ++low, --high
-    //return high;
+    bool done = false;
+    while (!done) {
+        while (bids[low].title.compare(pivot) < 0) {
+            ++low;
+        }
+        while (pivot.compare(bids[high].title) < 0) {
+            --high;
+        }
+        if (low >= high) {
+            done = true;
+        } else {
+            swap(bids[low], bids[high]);
+            ++low;
+            --high;
+        }
+    }
+    return high;
 }
 
 /**
@@ -150,18 +157,16 @@ int partition(vector<Bid> &bids, int begin, int end) {
  * @param end the ending index to sort on
  */
 void quickSort(vector<Bid> &bids, int begin, int end) {
-    //set mid equal to 0
+    //int mid = 0;
 
-    /* Base case: If there are 1 or zero bids to sort,
-     partition is already sorted otherwise if begin is greater
-     than or equal to end then return*/
+    if (begin >= end) {
+        return;
+    }
 
-    /* Partition bids into low and high such that
-     midpoint is location of last element in low */
+    int mid = partition(bids, begin, end);
 
-    // recursively sort low partition (begin to mid)
-
-    // recursively sort high partition (mid+1 to end)
+    quickSort(bids, begin, mid);
+    quickSort(bids, mid + 1, end);
 }
 
 // FIXME (1a): Implement the selection sort logic over bid.title
@@ -174,126 +179,120 @@ void quickSort(vector<Bid> &bids, int begin, int end) {
  * @param bid address of the vector<Bid>
  *            instance to be sorted
  */
-void selectionSort(vector<Bid> &bids) {
-    //define min as int (index of the current minimum bid)
-
-    // check size of bids vector
-    size_t size = bids.size();
+void selectionSort(vector<Bid>& bids) {
     int min;
+    size_t size = bids.size();
 
-    // set size_t platform-neutral result equal to bid.size() //above??
-
-    // pos is the position within bids that divides sorted/unsorted
-    // for size_t pos = 0 and less than size -1
-    // set min = pos
-    // loop over remaining elements to the right of position
-    // if this element's title is less than minimum title
-    // this element becomes the minimum
-    // swap the current minimum with smaller one found
-    // swap is a built in vector method
     for (size_t pos = 0; pos < size - 1; ++pos) {
         min = pos;
-        for (size_t j = pos + 1; j < size - 1; ++j) {
+        for (size_t j = pos + 1; j < size; ++j) {
             if (bids[j].title.compare(bids[min].title) < 0) {
                 min = j;
             }
         }
         if (min != pos) {
-            std::swap(bids.at(pos), bids.at(min));
+            swap(bids.at(pos), bids.at(min));
         }
     }
+}
 
-    /**
-     * Simple C function to convert a string to a double
-     * after stripping out unwanted char
-     *
-     * credit: http://stackoverflow.com/a/24875936
-     *
-     * @param ch The character to strip out
-     */
-    double strToDouble(string str, char ch) {
-        str.erase(remove(str.begin(), str.end(), ch), str.end());
-        return atof(str.c_str());
+/**
+ * Simple C function to convert a string to a double
+ * after stripping out unwanted char
+ *
+ * credit: http://stackoverflow.com/a/24875936
+ *
+ * @param ch The character to strip out
+ */
+double strToDouble(string str, char ch) {
+    str.erase(remove(str.begin(), str.end(), ch), str.end());
+    return atof(str.c_str());
+}
+
+/**
+ * The one and only main() method
+ */
+int main(int argc, char *argv[]) {
+    // process command line arguments
+    string csvPath;
+    switch (argc) {
+        case 2:
+            csvPath = argv[1];
+            break;
+        default:
+            csvPath = "eBid_Monthly_Sales.csv";
     }
 
-    /**
-     * The one and only main() method
-     */
-    int main(int argc, char *argv[]) {
-        // process command line arguments
-        string csvPath;
-        switch (argc) {
-            case 2:
-                csvPath = argv[1];
-                break;
-            default:
-                csvPath = "eBid_Monthly_Sales.csv";
-        }
+    // Define a vector to hold all the bids
+    vector<Bid> bids;
 
-        // Define a vector to hold all the bids
-        vector<Bid> bids;
+    // Define a timer variable
+    clock_t ticks;
 
-        // Define a timer variable
-        clock_t ticks;
+    int choice = 0;
+    while (choice != 9) {
+        std::cout << "Menu:" << endl;
+        std::cout << "  1. Load Bids" << endl;
+        std::cout << "  2. Display All Bids" << endl;
+        std::cout << "  3. Selection Sort All Bids" << endl;
+        std::cout << "  4. Quick Sort All Bids" << endl;
+        std::cout << "  9. Exit" << endl;
+        std::cout << "Enter choice: ";
+        cin >> choice;
 
-        int choice = 0;
-        while (choice != 9) {
-            std::cout << "Menu:" << endl;
-            std::cout << "  1. Load Bids" << endl;
-            std::cout << "  2. Display All Bids" << endl;
-            std::cout << "  3. Selection Sort All Bids" << endl;
-            std::cout << "  4. Quick Sort All Bids" << endl;
-            std::cout << "  9. Exit" << endl;
-            std::cout << "Enter choice: ";
-            cin >> choice;
-
-            switch (choice) {
-                case 1:
-                    // Initialize a timer variable before loading bids
-                    ticks = clock();
+        switch (choice) {
+            case 1:
+                // Initialize a timer variable before loading bids
+                ticks = clock();
 
                 // Complete the method call to load the bids
-                    bids = loadBids(csvPath);
+                bids = loadBids(csvPath);
 
-                    std::cout << bids.size() << " bids read" << endl;
+                std::cout << bids.size() << " bids read" << endl;
 
                 // Calculate elapsed time and display result
-                    ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-                    cout << "time: " << ticks << " clock ticks" << endl;
-                    cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+                ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+                cout << "time: " << ticks << " clock ticks" << endl;
+                cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
 
-                    break;
+                break;
 
-                case 2:
-                    // Loop and display the bids read
-                    for (int i = 0; i < bids.size(); ++i) {
-                        displayBid(bids[i]);
-                    }
-                    cout << endl;
+            case 2:
+                // Loop and display the bids read
+                for (int i = 0; i < bids.size(); ++i) {
+                    displayBid(bids[i]);
+                }
+                cout << endl;
 
-                    break;
+                break;
 
-                // FIXME (1b): Invoke the selection sort and report timing results
+            // FIXME (1b): Invoke the selection sort and report timing results
 
-                case 3:
-                    ticks = clock();
-                    selectionSort(bids);
-                    ticks = clock() - ticks;
-                    cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
-                    break;
+            case 3:
+                ticks = clock();
+                selectionSort(bids);
+                ticks = clock() - ticks;
+                std::cout << "time: " << ticks << " clock ticks" << endl;
+                std::cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+                break;
 
-                // FIXME (2b): Invoke the quick sort and report timing results
+            // FIXME (2b): Invoke the quick sort and report timing results
 
-                case 4:
-                    ticks = clock();
-                    quickSort(bids, 0, bids.size() - 1);
-                    ticks = clock() - ticks;
-                    std::cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
-                    break;
-            //}
-        //}
+            case 4:
+                ticks = clock();
+                quickSort(bids, 0, bids.size() - 1);
+                ticks = clock() - ticks;
+                std::cout << "time: " << ticks << " clock ticks" << endl;
+                std::cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
 
-        cout << "Good bye." << endl;
+                break;
 
-        return 0;
+            case 9:
+                break;
+        }
     }
+
+    cout << "Good bye." << endl;
+
+    return 0;
+}
