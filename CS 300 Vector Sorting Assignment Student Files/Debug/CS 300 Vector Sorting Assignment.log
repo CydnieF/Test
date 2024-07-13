@@ -1,0 +1,9 @@
+﻿  CSVparser.cpp
+  VectorSorting.cpp
+\\apporto.com\dfs\SNHU\USERS\cydniefisher_snhu\Downloads\Test-main\Test-main\CS 300 Vector Sorting Assignment Student Files\VectorSorting.cpp(96,27): warning C4018: '<': signed/unsigned mismatch
+\\apporto.com\dfs\SNHU\USERS\cydniefisher_snhu\Downloads\Test-main\Test-main\CS 300 Vector Sorting Assignment Student Files\VectorSorting.cpp(214,45): error C2601: 'strToDouble': local function definitions are illegal
+\\apporto.com\dfs\SNHU\USERS\cydniefisher_snhu\Downloads\Test-main\Test-main\CS 300 Vector Sorting Assignment Student Files\VectorSorting.cpp(177): message : this line contains a '{' which has not yet been matched
+\\apporto.com\dfs\SNHU\USERS\cydniefisher_snhu\Downloads\Test-main\Test-main\CS 300 Vector Sorting Assignment Student Files\VectorSorting.cpp(222,38): error C2601: 'main': local function definitions are illegal
+\\apporto.com\dfs\SNHU\USERS\cydniefisher_snhu\Downloads\Test-main\Test-main\CS 300 Vector Sorting Assignment Student Files\VectorSorting.cpp(177): message : this line contains a '{' which has not yet been matched
+\\apporto.com\dfs\SNHU\USERS\cydniefisher_snhu\Downloads\Test-main\Test-main\CS 300 Vector Sorting Assignment Student Files\VectorSorting.cpp(240): fatal error C1075: '{': no matching token found
+  Generating Code...

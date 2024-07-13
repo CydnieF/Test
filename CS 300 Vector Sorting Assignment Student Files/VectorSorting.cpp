@@ -44,7 +44,7 @@ struct Bid {
  * @param bid struct containing the bid info
  */
 void displayBid(Bid bid) {
-    cout << bid.bidId << ": " << bid.title << " | " << bid.amount << " | "
+    std::cout << bid.bidId << ": " << bid.title << " | " << bid.amount << " | "
             << bid.fund << endl;
     return;
 }
@@ -57,17 +57,17 @@ void displayBid(Bid bid) {
 Bid getBid() {
     Bid bid;
 
-    cout << "Enter Id: ";
+    std::cout << "Enter Id: ";
     cin.ignore();
     getline(cin, bid.bidId);
 
-    cout << "Enter title: ";
+    std::cout << "Enter title: ";
     getline(cin, bid.title);
 
-    cout << "Enter fund: ";
+    std::cout << "Enter fund: ";
     cin >> bid.fund;
 
-    cout << "Enter amount: ";
+    std::cout << "Enter amount: ";
     cin.ignore();
     string strAmount;
     getline(cin, strAmount);
@@ -83,7 +83,7 @@ Bid getBid() {
  * @return a container holding all the bids read
  */
 vector<Bid> loadBids(string csvPath) {
-    cout << "Loading CSV file " << csvPath << endl;
+    std::cout << "Loading CSV file " << csvPath << endl;
 
     // Define a vector data structure to hold a collection of bids.
     vector<Bid> bids;
@@ -238,13 +238,13 @@ void selectionSort(vector<Bid> &bids) {
 
         int choice = 0;
         while (choice != 9) {
-            cout << "Menu:" << endl;
-            cout << "  1. Load Bids" << endl;
-            cout << "  2. Display All Bids" << endl;
-            cout << "  3. Selection Sort All Bids" << endl;
-            cout << "  4. Quick Sort All Bids" << endl;
-            cout << "  9. Exit" << endl;
-            cout << "Enter choice: ";
+            std::cout << "Menu:" << endl;
+            std::cout << "  1. Load Bids" << endl;
+            std::cout << "  2. Display All Bids" << endl;
+            std::cout << "  3. Selection Sort All Bids" << endl;
+            std::cout << "  4. Quick Sort All Bids" << endl;
+            std::cout << "  9. Exit" << endl;
+            std::cout << "Enter choice: ";
             cin >> choice;
 
             switch (choice) {
@@ -255,7 +255,7 @@ void selectionSort(vector<Bid> &bids) {
                 // Complete the method call to load the bids
                     bids = loadBids(csvPath);
 
-                    cout << bids.size() << " bids read" << endl;
+                    std::cout << bids.size() << " bids read" << endl;
 
                 // Calculate elapsed time and display result
                     ticks = clock() - ticks; // current clock ticks minus starting clock ticks
@@ -280,18 +280,18 @@ void selectionSort(vector<Bid> &bids) {
                     selectionSort(bids);
                     ticks = clock() - ticks;
                     cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
-                    break
+                    break;
 
                 // FIXME (2b): Invoke the quick sort and report timing results
 
-                case 4;
+                case 4:
                     ticks = clock();
                     quickSort(bids, 0, bids.size() - 1);
                     ticks = clock() - ticks;
-                    cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
-                    break
-            }
-        }
+                    std::cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+                    break;
+            //}
+        //}
 
         cout << "Good bye." << endl;
 
